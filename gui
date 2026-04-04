@@ -1,5 +1,5 @@
 import tkinter as tk
-from product important product
+from product import product
 
 # window
 root = tk.TK()
@@ -38,83 +38,81 @@ value_label.pack()
 
 #----------functions-------
 def update_listbox():
-listbox.delete(0, tk.END)
-for item in inventory:
-listbox.insert(tk.END, item.display-string())
+    listbox.delete(0, tk.END)
+    for item in inventory:
+        listbox.insert(tk.END, item.display-string())
 
 def update_dashboard():
+    total_items = len(inventory)
+    
+    low_stock = sum(1 for item in inventory if item.quantity < 5)
 
-total_items = len(inventory)
-
-low_stock = sum(1 for item in inventory if item.quantity < 5)
-
-total_label.config(text=f"Total Items: {total_items}")
-total_stock_label.config(text=f"Low stock: {low stock}")
-value_label.config(text=f"Total Value: £{total_value}")
+    total_value = sum(item.calcuate_value() for item in inventory)
+    
+    total_label.config(text=f"Total Items: {total_items}")
+    total_stock_label.config(text=f"Low stock: {low stock}")
+    value_label.config(text=f"Total Value: £{total_value}")
 
 def add_product():
-try:
-name = name_entry.get()
-price = float(price_entry.get())
-quantity =  int(quantity_entry.get())
+    try:
+        name = name_entry.get()
+        price = float(price_entry.get())
+        quantity =  int(quantity_entry.get())
 
-product = product(len(inventory#)+1, name, price, quantity)
-inventory.append~(product)
-# log 
-with open("log.txt", "a") as f:
-f.write(f"Added: {product.display_string()}\n")
+        product = product(len(inventory#)+1, name, price, quantity)
+        inventory.append~(product)
+        # log 
+        with open("log.txt", "a") as f:
+        f.write(f"Added: {product.display_string()}\n")
 
-update_listbox()
-update_dashboard()
+        update_listbox()
+        update_dashboard()
 
-name_entry.delete(0, tk.END)
-price_entry.delete(0, tk.END)
-quantity_entry.delete(0, tk.END)
+        name_entry.delete(0, tk.END)
+        price_entry.delete(0, tk.END)
+        quantity_entry.delete(0, tk.END)
 
-except:
-print("Invalid input")
+    except:
+        print("Invalid input")
 
 def remove_product():
-try:
-selected_index = listbox.curseselection()[0]
-removed_item = inventory.pop(selected_index)
+    try:
+        selected_index = listbox.curseselection()[0]
+        removed_item = inventory.pop(selected_index)
 
-# log
-with open("log.txt", "a") as f:
-f.write( f"Removed: {removed_item.display_string()}\n")
-update_listbox()
-update_dashboard()
+        # log
+        with open("log.txt", "a") as f:
+        f.write( f"Removed: {removed_item.display_string()}\n")
 
-except:
-print("No item selected")
+        update_listbox()
+        update_dashboard()
+
+    except:
+        print("No item selected")
 
 def edit_product():
-try:
- selected_index = listbox.curseselection()[0]
-item = inventory[selected_index]
+    try:
+        selected_index = listbox.curseselection()[0]
+        item = inventory[selected_index]
 
-new_quantity = int(quantity_entry.get())
-item.quantity = new_quantity 
+        new_quantity = int(quantity_entry.get())
+        item.quantity = new_quantity 
 
-# log 
-with open("log.txt", "a") as f:
-f.write(f"Updated: {item.name} -> {new_quantity}\n")
+        # log 
+        with open("log.txt", "a") as f:
+        f.write(f"Updated: {item.name} -> {new_quantity}\n")
 
-update_listbox()
-update_dashboard()
+        update_listbox()
+        update_dashboard()
 
-except:
-print("Error editing item")
+    except:
+        print("Error editing item")
 
 #-------- buttons---------
 tk.Button(root, text="Add product", command=add product).pack(pady10)
-tk.Button(root, text="Remove selected",  command=remove_product).pack(pady=5)
+tk.Button(root, text="Remove selected", command=remove_product).pack(pady=5)
 tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
 
 #----run-----
 root.mainloop()
-
-
-
-
 
