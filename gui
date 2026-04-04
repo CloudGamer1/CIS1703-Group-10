@@ -77,5 +77,44 @@ print("Invalid input")
 def remove_product():
 try:
 selected_index = listbox.curseselection()[0]
+removed_item = inventory.pop(selected_index)
+
+# log
+with open("log.txt", "a") as f:
+f.write( f"Removed: {removed_item.display_string()}\n")
+update_listbox()
+update_dashboard()
+
+except:
+print("No item selected")
+
+def edit_product():
+try:
+ selected_index = listbox.curseselection()[0]
+item = inventory[selected_index]
+
+new_quantity = int(quantity_entry.get())
+item.quantity = new_quantity 
+
+# log 
+with open("log.txt", "a") as f:
+f.write(f"Updated: {item.name} -> {new_quantity}\n")
+
+update_listbox()
+update_dashboard()
+
+except:
+print("Error editing item")
+
+#-------- buttons---------
+tk.Button(root, text="Add product", command=add product).pack(pady10)
+tk.Button(root, text="Remove selected",  command=remove_product).pack(pady=5)
+tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
+
+#----run-----
+root.mainloop()
+
+
+
 
 
