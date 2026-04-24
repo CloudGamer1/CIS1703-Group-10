@@ -134,6 +134,25 @@ def save_inventory(InventoryFile, data):
         writer.writerows(TempData)
 
 
+def load_inventory(InventoryFile):
+    TempData = []
+    with open(InventoryFile, "r") as InventoryData:
+        reader = csv.DictReader(InventoryData)
+        for row in reader:
+            data = {
+                "product_id": int(row["product_id"]),
+                "name": row["name"],
+                "price": float(row["price"]),
+                "quantity": int(row["quantity"]),
+            }
+            TempData.append(data)
+    TempInventory = [Product(**item) for item in TempData]
+    for item in TempInventory:
+        listbox.insert(tk.END, item.to_display_string())
+
+    return TempInventory
+
+
 # -------- buttons---------
 tk.Button(root, text="Add product", command=add_product).pack(
     pady=10
@@ -145,4 +164,7 @@ tk.Button(
 ).pack(pady=5)
 
 # ----run-----
+inventory = load_inventory("Inventory.csv")
+update_dashboard()
+
 root.mainloop()
