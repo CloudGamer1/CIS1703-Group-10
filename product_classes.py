@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 from datetime import datetime, timedelta
 
+
 class Product:
     def __init__(self, product_id, name, price, quantity):
         self.product_id = product_id
@@ -28,7 +29,7 @@ class Product:
 class PerishableProduct(Product):
     def __init__(self, product_id, name, price, quantity, expiry_date, storage_temp):
         super().__init__(product_id, name, price, quantity)
-        self.expiry_date = expiry_date  
+        self.expiry_date = expiry_date
         self.storage_temp = storage_temp
 
     def get_type(self):
