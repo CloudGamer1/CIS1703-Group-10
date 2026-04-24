@@ -1,6 +1,7 @@
 import tkinter as tk
 import csv
 from product_classes import Product  # changed product to product_classes
+from tkinter import messagebox
 
 InventoryFile = "inventory.csv"
 
@@ -181,6 +182,11 @@ def load_inventory(InventoryFile):
     return TempInventory
 
 
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you realy want to exit the program?"):
+        root.destroy()
+
+
 """------------------------------
 -------------------------------
 ----------buttons-----------
@@ -195,3 +201,5 @@ tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
 tk.Button(
     root, text="Save", command=lambda: save_inventory("Inventory.csv", inventory)
 ).pack(pady=5)
+
+root.protocol("WM_DELETE_WINDOW", on_closing)
