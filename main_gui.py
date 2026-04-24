@@ -40,8 +40,18 @@ value_label = tk.Label(root, text="Total Value: £0")
 value_label.pack()
 
 
-# ----------functions-------
+"""------------------------------
+-------------------------------
+----------funcitions-----------
+-------------------------------
+-------------------------------"""
+
+
 def update_listbox():
+    """
+    updates the listbox with the data in inventory
+    """
+
     listbox.delete(0, tk.END)
     for item in inventory:
         listbox.insert(
@@ -50,6 +60,9 @@ def update_listbox():
 
 
 def update_dashboard():
+    """
+    updates the dashboard "price, ammount of items, stock"
+    """
     total_items = len(inventory)
 
     low_stock = sum(1 for item in inventory if item.quantity < 5)
@@ -64,6 +77,9 @@ def update_dashboard():
 
 
 def add_product():
+    """
+    adds products to the inventory, creates a new object of the product class
+    """
     try:
         name = name_entry.get()
         price = float(price_entry.get())
@@ -89,6 +105,9 @@ def add_product():
 
 
 def remove_product():
+    """
+    removes the product from the inventory
+    """
     try:
         selected_index = listbox.curselection()[0]
         removed_item = inventory.pop(selected_index)
@@ -105,6 +124,9 @@ def remove_product():
 
 
 def edit_product():
+    """
+    edits the product in the inventory
+    """
     try:
         selected_index = listbox.curselection()[0]
         item = inventory[selected_index]
@@ -124,6 +146,10 @@ def edit_product():
 
 
 def save_inventory(InventoryFile, data):
+    """
+    saves the inventory into csv
+    """
+
     TempData = []
     for item in data:
         TempData.append(item.__dict__)
@@ -135,6 +161,8 @@ def save_inventory(InventoryFile, data):
 
 
 def load_inventory(InventoryFile):
+    """loads inventory from csv"""
+
     TempData = []
     with open(InventoryFile, "r") as InventoryData:
         reader = csv.DictReader(InventoryData)
@@ -153,7 +181,12 @@ def load_inventory(InventoryFile):
     return TempInventory
 
 
-# -------- buttons---------
+"""------------------------------
+-------------------------------
+----------buttons-----------
+-------------------------------
+-------------------------------"""
+
 tk.Button(root, text="Add product", command=add_product).pack(
     pady=10
 )  # added "_" to add product and added "=" to pady10"
@@ -162,9 +195,3 @@ tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
 tk.Button(
     root, text="Save", command=lambda: save_inventory("Inventory.csv", inventory)
 ).pack(pady=5)
-
-# ----run-----
-inventory = load_inventory("Inventory.csv")
-update_dashboard()
-
-root.mainloop()
