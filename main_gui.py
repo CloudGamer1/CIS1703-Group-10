@@ -18,7 +18,6 @@ tk.Label(root, text="Product Type").pack() #Added options for the user to select
 type_var = tk.StringVar(value="Product")
 type_dropdown = tk.OptionMenu(root, type_var, "Product", "Perishable", "Electronic")
 type_dropdown.pack()
-print("TYPE VAR OBJECT:", type_var)
 
 
 # -------inputs------------
@@ -88,7 +87,7 @@ def update_listbox():
     for item in inventory:
         listbox.insert(
             tk.END, item.to_display_string()
-        )  # fixed it from item.display-string() to item.display_string()
+        )
 
 
 def update_dashboard():
@@ -114,9 +113,6 @@ def add_product():
     """
     adds products to the inventory, creates a new object of the product class
     """
-    print("TYPE VAR IN ADD:", type_var)
-
-    print("DEBUG:", repr(type_var.get()))
 
     try:
         name = name_entry.get()
