@@ -1,6 +1,10 @@
 import tkinter as tk
 import csv
-from product_classes import Product, PerishableProduct, ElectronicProduct  #changed to import all three classes
+from product_classes import (
+    Product,
+    PerishableProduct,
+    ElectronicProduct,
+)  # changed to import all three classes
 from tkinter import messagebox
 
 InventoryFile = "inventory.csv"
@@ -14,7 +18,9 @@ root.geometry("800x800")  # fixed typo
 inventory = []
 
 
-tk.Label(root, text="Product Type").pack() #Added options for the user to select the type of product they want to add
+tk.Label(
+    root, text="Product Type"
+).pack()  # Added options for the user to select the type of product they want to add
 type_var = tk.StringVar(value="Product")
 type_dropdown = tk.OptionMenu(root, type_var, "Product", "Perishable", "Electronic")
 type_dropdown.pack()
@@ -32,7 +38,6 @@ price_entry.pack()
 tk.Label(root, text="Quantity").pack()
 quantity_entry = tk.Entry(root)
 quantity_entry.pack()
-
 
 
 """added fields for the perishable and electronic products"""
@@ -53,7 +58,6 @@ warranty_entry.pack()
 tk.Label(root, text="Power Usage (W)").pack()
 power_entry = tk.Entry(root)
 power_entry.pack()
-
 
 
 # ---------list display------
@@ -85,9 +89,7 @@ def update_listbox():
 
     listbox.delete(0, tk.END)
     for item in inventory:
-        listbox.insert(
-            tk.END, item.to_display_string()
-        )
+        listbox.insert(tk.END, item.to_display_string())
 
 
 def update_dashboard():
@@ -107,8 +109,6 @@ def update_dashboard():
     value_label.config(text=f"Total Value: £{total_value}")
 
 
-
-
 def add_product():
     """
     adds products to the inventory, creates a new object of the product class
@@ -119,7 +119,9 @@ def add_product():
         price = float(price_entry.get())
         quantity = int(quantity_entry.get())
 
-        product_type = type_var.get().strip().lower()  # get the selected product type and convert to lowercase
+        product_type = (
+            type_var.get().strip().lower()
+        )  # get the selected product type and convert to lowercase
         new_id = len(inventory) + 1
 
         if product_type == "product":
@@ -155,24 +157,22 @@ def add_product():
         print("Invalid input")
 
 
-
 def remove_product():
     """
     removes the product from the inventory
     """
-    try:
-        selected_index = listbox.curselection()[0]
-        removed_item = inventory.pop(selected_index)
+    # try:
+    selected_index = listbox.curselection()[0]
+    removed_item = inventory.pop(selected_index)
 
-        # log
-        with open("log.txt", "a") as f:
-            f.write(f"Removed: {removed_item.to_display_string()}\n")
+    # log
+    with open("log.txt", "a") as f:
+        f.write(f"Removed: {removed_item.to_display_string()}\n")
+    update_listbox()
+    update_dashboard()
 
-        update_listbox()
-        update_dashboard()
-
-    except:
-        print("No item selected")
+    # except:
+    #    print("No item selected")
 
 
 def edit_product():
@@ -197,17 +197,19 @@ def edit_product():
         print("Error editing item")
 
 
-def save_inventory(InventoryFile, data):#added the new fields for the perishable and electronic products to the save_inventory function
+def save_inventory(
+    InventoryFile, data
+):  # added the new fields for the perishable and electronic products to the save_inventory function
     TempData = []
-    
+
     for item in data:
-        
+
         row = {
             "product_id": item.product_id,
             "name": item.name,
             "price": item.price,
             "quantity": item.quantity,
-            "type": item.get_type()
+            "type": item.get_type(),
         }
 
         if item.get_type() == "Perishable":
@@ -228,8 +230,9 @@ def save_inventory(InventoryFile, data):#added the new fields for the perishable
         writer.writerows(TempData)
 
 
-
-def load_inventory(InventoryFile):#added the new fields for the perishable and electronic products to the load_inventory function and added error handling for missing file
+def load_inventory(
+    InventoryFile,
+):  # added the new fields for the perishable and electronic products to the load_inventory function and added error handling for missing file
     TempInventory = []
 
     try:
@@ -246,7 +249,7 @@ def load_inventory(InventoryFile):#added the new fields for the perishable and e
                         float(row["price"]),
                         int(row["quantity"]),
                         row.get("expiry_date"),
-                        row.get("storage_temp")
+                        row.get("storage_temp"),
                     )
 
                 elif ptype == "Electronic":
@@ -256,7 +259,7 @@ def load_inventory(InventoryFile):#added the new fields for the perishable and e
                         float(row["price"]),
                         int(row["quantity"]),
                         int(row.get("warranty_months", 0)),
-                        int(row.get("power_usage", 0))
+                        int(row.get("power_usage", 0)),
                     )
 
                 else:
@@ -264,7 +267,7 @@ def load_inventory(InventoryFile):#added the new fields for the perishable and e
                         int(row["product_id"]),
                         row["name"],
                         float(row["price"]),
-                        int(row["quantity"])
+                        int(row["quantity"]),
                     )
 
                 TempInventory.append(Data)
@@ -272,7 +275,7 @@ def load_inventory(InventoryFile):#added the new fields for the perishable and e
     except FileNotFoundError:
         TempInventory = []
 
-    listbox.delete(0, tk.END)#clears the listbox to stop duplicates
+    listbox.delete(0, tk.END)  # clears the listbox to stop duplicates
     for item in TempInventory:
         listbox.insert(tk.END, item.to_display_string())
 
@@ -300,3 +303,7 @@ tk.Button(
 ).pack(pady=5)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
+
+
+inventory = load_inventory("Inventory.csv")
+update_dashboard()
