@@ -1,6 +1,6 @@
 import tkinter as tk
 import csv
-from product_classes import Product  # changed product to product_classes
+from product_classes import Product, PerishableProduct, ElectronicProduct  #changed to import all three classes
 from tkinter import messagebox
 
 InventoryFile = "inventory.csv"
@@ -12,6 +12,14 @@ root.geometry("800x800")  # fixed typo
 
 # storage
 inventory = []
+
+
+tk.Label(root, text="Product Type").pack() #Added options for the user to select the type of product they want to add
+type_var = tk.StringVar(value="Product")
+type_dropdown = tk.OptionMenu(root, type_var, "Product", "Perishable", "Electronic")
+type_dropdown.pack()
+print("TYPE VAR OBJECT:", type_var)
+
 
 # -------inputs------------
 tk.Label(root, text="Name").pack()
@@ -26,8 +34,31 @@ tk.Label(root, text="Quantity").pack()
 quantity_entry = tk.Entry(root)
 quantity_entry.pack()
 
+
+
+"""added fields for the perishable and electronic products"""
+# Perishable fields
+tk.Label(root, text="Expiry Date (YYYY-MM-DD)").pack()
+expiry_entry = tk.Entry(root)
+expiry_entry.pack()
+
+tk.Label(root, text="Storage Temp").pack()
+storage_entry = tk.Entry(root)
+storage_entry.pack()
+
+# Electronic fields
+tk.Label(root, text="Warranty (months)").pack()
+warranty_entry = tk.Entry(root)
+warranty_entry.pack()
+
+tk.Label(root, text="Power Usage (W)").pack()
+power_entry = tk.Entry(root)
+power_entry.pack()
+
+
+
 # ---------list display------
-listbox = tk.Listbox(root, width=70)
+listbox = tk.Listbox(root, width=120)
 listbox.pack(pady=10)
 
 # ------dashboard--------
@@ -77,22 +108,41 @@ def update_dashboard():
     value_label.config(text=f"Total Value: £{total_value}")
 
 
+
+
 def add_product():
     """
     adds products to the inventory, creates a new object of the product class
     """
+    print("TYPE VAR IN ADD:", type_var)
+
+    print("DEBUG:", repr(type_var.get()))
+
     try:
         name = name_entry.get()
         price = float(price_entry.get())
         quantity = int(quantity_entry.get())
 
-        product = Product(len(inventory) + 1, name, price, quantity)  # removed "#"
-        inventory.append(product)  # removed ~
-        # log
+        product_type = type_var.get().strip().lower()  # get the selected product type and convert to lowercase
+        new_id = len(inventory) + 1
+
+        if product_type == "product":
+            product = Product(new_id, name, price, quantity)
+
+        elif product_type == "perishable":
+            expiry = expiry_entry.get()
+            storage = storage_entry.get()
+            product = PerishableProduct(new_id, name, price, quantity, expiry, storage)
+
+        elif product_type == "electronic":
+            warranty = int(warranty_entry.get())
+            power = int(power_entry.get())
+            product = ElectronicProduct(new_id, name, price, quantity, warranty, power)
+
+        inventory.append(product)
+
         with open("log.txt", "a") as f:
-            f.write(
-                f"Added: {product.to_display_string()}\n"
-            )  # made sure f is under the with block
+            f.write(f"Added: {product.to_display_string()}\n")
 
         update_listbox()
         update_dashboard()
@@ -100,9 +150,14 @@ def add_product():
         name_entry.delete(0, tk.END)
         price_entry.delete(0, tk.END)
         quantity_entry.delete(0, tk.END)
+        expiry_entry.delete(0, tk.END)
+        storage_entry.delete(0, tk.END)
+        warranty_entry.delete(0, tk.END)
+        power_entry.delete(0, tk.END)
 
     except:
         print("Invalid input")
+
 
 
 def remove_product():
@@ -146,36 +201,82 @@ def edit_product():
         print("Error editing item")
 
 
-def save_inventory(InventoryFile, data):
-    """
-    saves the inventory into csv
-    """
-
+def save_inventory(InventoryFile, data):#added the new fields for the perishable and electronic products to the save_inventory function
     TempData = []
+    
     for item in data:
-        TempData.append(item.__dict__)
-    fields = TempData[0].keys()
+        
+        row = {
+            "product_id": item.product_id,
+            "name": item.name,
+            "price": item.price,
+            "quantity": item.quantity,
+            "type": item.get_type()
+        }
+
+        if item.get_type() == "Perishable":
+            row["expiry_date"] = item.expiry_date
+            row["storage_temp"] = item.storage_temp
+
+        if item.get_type() == "Electronic":
+            row["warranty_months"] = item.warranty_months
+            row["power_usage"] = item.power_usage
+
+        TempData.append(row)
+
+    fields = TempData[0].keys() if len(TempData) > 0 else []
+
     with open(InventoryFile, "w", newline="") as InventoryData:
         writer = csv.DictWriter(InventoryData, fields)
         writer.writeheader()
         writer.writerows(TempData)
 
 
-def load_inventory(InventoryFile):
-    """loads inventory from csv"""
 
-    TempData = []
-    with open(InventoryFile, "r") as InventoryData:
-        reader = csv.DictReader(InventoryData)
-        for row in reader:
-            data = {
-                "product_id": int(row["product_id"]),
-                "name": row["name"],
-                "price": float(row["price"]),
-                "quantity": int(row["quantity"]),
-            }
-            TempData.append(data)
-    TempInventory = [Product(**item) for item in TempData]
+def load_inventory(InventoryFile):#added the new fields for the perishable and electronic products to the load_inventory function and added error handling for missing file
+    TempInventory = []
+
+    try:
+        with open(InventoryFile, "r") as InventoryData:
+            reader = csv.DictReader(InventoryData)
+
+            for row in reader:
+                ptype = row.get("type", "Product")
+
+                if ptype == "Perishable":
+                    Data = PerishableProduct(
+                        int(row["product_id"]),
+                        row["name"],
+                        float(row["price"]),
+                        int(row["quantity"]),
+                        row.get("expiry_date"),
+                        row.get("storage_temp")
+                    )
+
+                elif ptype == "Electronic":
+                    Data = ElectronicProduct(
+                        int(row["product_id"]),
+                        row["name"],
+                        float(row["price"]),
+                        int(row["quantity"]),
+                        int(row.get("warranty_months", 0)),
+                        int(row.get("power_usage", 0))
+                    )
+
+                else:
+                    Data = Product(
+                        int(row["product_id"]),
+                        row["name"],
+                        float(row["price"]),
+                        int(row["quantity"])
+                    )
+
+                TempInventory.append(Data)
+
+    except FileNotFoundError:
+        TempInventory = []
+
+    listbox.delete(0, tk.END)#clears the listbox to stop duplicates
     for item in TempInventory:
         listbox.insert(tk.END, item.to_display_string())
 
