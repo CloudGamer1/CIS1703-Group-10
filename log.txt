@@ -1,0 +1,26 @@
+Added: ID: 1 | Name: Connor | Price: £2.20 | Qty: 200 | Type: Product
+Removed: ID: 1 | Name: Connor | Price: £2.20 | Qty: 200 | Type: Product
+Added: ID: 1 | Name: Apple | Price: £1.20 | Qty: 10 | Type: Product
+Added: ID: 5 | Name: Milk | Price: £0.99 | Qty: 6 | Type: Product
+Added: ID: 1 | Name: Test | Price: £1.00 | Qty: 1 | Type: Product
+Added: ID: 2 | Name: Test | Price: £1.00 | Qty: 1 | Type: Product
+Added: ID: 3 | Name: Milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: Milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 2 | Name: Milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: Milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: Milk | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: d | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 2 | Name: mil | Price: £2.00 | Qty: 2 | Type: Perishable | Expiry: 2026-07-04 | Storage Temp: 3C
+Added: ID: 1 | Name: 2 | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 2 | Name: milk | Price: £23.00 | Qty: 3 | Type: Perishable | Expiry: 2027-04-05 | Storage Temp: 4C
+Added: ID: 3 | Name: Batteru | Price: £344.00 | Qty: 1 | Type: Electronic | Warranty: 6 months | Power: 200W
+Added: ID: 1 | Name: batterr | Price: £2.00 | Qty: 3 | Type: Electronic | Warranty: 6 months | Power: 200W
+Added: ID: 2 | Name: bob | Price: £300.00 | Qty: 2 | Type: Product
+Added: ID: 3 | Name: Milk | Price: £20.00 | Qty: 2 | Type: Perishable | Expiry: 2026-04-03 | Storage Temp: 4C
+Added: ID: 1 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 1 | Name: Milk | Price: £20.00 | Qty: 2 | Type: Perishable | Expiry: 2020-03-01 | Storage Temp: 4C
+Added: ID: 1 | Name: Bomb | Price: £2000.00 | Qty: 1 | Type: Electronic | Warranty: 5 months | Power: 200W
+Added: ID: 1 | Name: Bob | Price: £2.00 | Qty: 2 | Type: Product
+Removed: ID: 1 | Name: Bob | Price: £2.00 | Qty: 2 | Type: Product

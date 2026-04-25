@@ -38,7 +38,7 @@ class PerishableProduct(Product):
     def to_display_string(self):
         return (
             super().to_display_string()
-            + f" | Expiry: {self.expiry_date.strftime('%Y-%m-%d')}"
+            + f" | Expiry: {self.expiry_date}"
             + f" | Storage Temp: {self.storage_temp}"
         )
 
