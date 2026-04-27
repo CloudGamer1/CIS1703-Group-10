@@ -75,6 +75,11 @@ low_stock_label.pack()
 value_label = tk.Label(root, text="Total Value: £0")
 value_label.pack()
 
+status_label = tk.Label(root, text="", fg="white", bg="#3498db", width=80)#Rays code for the status label
+status_label.pack(pady=5)
+
+units_label = tk.Label(root, text="Total Units: 0")#added units label to the dashboard to show the total number of units in stock, not just the number of different products
+units_label.pack()
 
 """------------------------------
 -------------------------------
@@ -98,16 +103,44 @@ def update_dashboard():
     updates the dashboard "price, ammount of items, stock"
     """
     total_items = len(inventory)
+    total_units = sum(item.quantity for item in inventory) #ray added total units
 
     low_stock = sum(1 for item in inventory if item.quantity < 5)
 
     total_value = sum(item.calculate_value() for item in inventory)
 
     total_label.config(text=f"Total Items: {total_items}")
+    units_label.config(text=f"Total Units: {total_units}")#ray unit label
     low_stock_label.config(
         text=f"Low stock: {low_stock}"
     )  # changed Total_stock_label to low_stock_label and added "_" to low_stock
     value_label.config(text=f"Total Value: £{total_value}")
+
+
+def show_status(message, status_type="info"):#inserted rays code here
+    colors = {
+        "error": "#e74c3c",
+        "success": "#2ecc71",
+        "warning": "#f39c12",
+        "info": "#3498db"
+    }
+
+    status_label.config(
+        text=message,
+        bg=colors.get(status_type, "#3498db")
+    )
+
+    # Cancel previous timer
+    if hasattr(show_status, "after_id"):
+        root.after_cancel(show_status.after_id)
+
+    # Auto-clear after 3 seconds
+    show_status.after_id = root.after(3000, clear_status)
+
+def clear_status():
+    status_label.config(text="", bg="gray")
+
+#end of rays code
 
 
 def add_product():
