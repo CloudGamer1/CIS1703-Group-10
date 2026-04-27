@@ -4,16 +4,16 @@ from product_classes import (
     Product,
     PerishableProduct,
     ElectronicProduct,
-)  # changed to import all three classes
+)
 from tkinter import messagebox
 from smartalerts import run_smart_alerts
 
 InventoryFile = "inventory.csv"
 
 # window
-root = tk.Tk()  # fixed it from tk.TK to tk.Tk()
+root = tk.Tk()
 root.title("Smartstock Dashboard")
-root.geometry("800x850")  # fixed typo
+root.geometry("800x850")  # fixed smart art not showing
 
 # storage
 inventory = []
@@ -113,7 +113,7 @@ def update_dashboard():
     units_label.config(text=f"Total Units: {total_units}")#ray unit label
     low_stock_label.config(
         text=f"Low stock: {low_stock}"
-    )  # changed Total_stock_label to low_stock_label and added "_" to low_stock
+    ) 
     value_label.config(text=f"Total Value: £{total_value}")
 
 
@@ -339,7 +339,7 @@ def on_closing():
 
 tk.Button(root, text="Add product", command=add_product).pack(
     pady=10
-)  # added "_" to add product and added "=" to pady10"
+) 
 tk.Button(root, text="Remove selected", command=remove_product).pack(pady=5)
 tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
 tk.Button(
