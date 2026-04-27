@@ -13,7 +13,7 @@ InventoryFile = "inventory.csv"
 # window
 root = tk.Tk()  # fixed it from tk.TK to tk.Tk()
 root.title("Smartstock Dashboard")
-root.geometry("800x800")  # fixed typo
+root.geometry("800x850")  # fixed typo
 
 # storage
 inventory = []
