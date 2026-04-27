@@ -6,6 +6,7 @@ from product_classes import (
     ElectronicProduct,
 )  # changed to import all three classes
 from tkinter import messagebox
+from smartalerts import run_smart_alerts
 
 InventoryFile = "inventory.csv"
 
@@ -222,7 +223,17 @@ def save_inventory(
 
         TempData.append(row)
 
-    fields = TempData[0].keys() if len(TempData) > 0 else []
+    fields = [
+        "product_id",
+        "name",
+        "price",
+        "quantity",
+        "type",
+        "warranty_months",
+        "power_usage",
+        "expiry_date",
+        "storage_temp",
+    ]
 
     with open(InventoryFile, "w", newline="") as InventoryData:
         writer = csv.DictWriter(InventoryData, fields)
@@ -301,6 +312,9 @@ tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
 tk.Button(
     root, text="Save", command=lambda: save_inventory("Inventory.csv", inventory)
 ).pack(pady=5)
+tk.Button(
+    root, text="Run Smart Alerts", command=lambda: run_smart_alerts(inventory)
+).pack(pady=10)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
