@@ -223,7 +223,17 @@ def save_inventory(
 
         TempData.append(row)
 
-    fields = TempData[0].keys() if len(TempData) > 0 else []
+    fields = [
+        "product_id",
+        "name",
+        "price",
+        "quantity",
+        "type",
+        "warranty_months",
+        "power_usage",
+        "expiry_date",
+        "storage_temp",
+    ]
 
     with open(InventoryFile, "w", newline="") as InventoryData:
         writer = csv.DictWriter(InventoryData, fields)

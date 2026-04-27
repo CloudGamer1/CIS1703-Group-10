@@ -1,2 +1,4 @@
-product_id,name,price,quantity,type,warranty_months,power_usage
-3,mic,50.0,2,Electronic,3,500
+product_id,name,price,quantity,type,warranty_months,power_usage,expiry_date,storage_temp
+1,car,100.0,1,Product,,,,
+2,milk,10.0,3,Perishable,,,2026-04-27,5
+3,chesse,5.0,6,Perishable,,,2026-04-28,5
