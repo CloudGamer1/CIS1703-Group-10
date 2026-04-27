@@ -11,3 +11,8 @@ Added: ID: 4 | Name: Milk | Price: £2.00 | Qty: 2 | Type: Perishable | Expiry: 2
 Added: ID: 4 | Name: bob | Price: £2.00 | Qty: 2 | Type: Product
 Added: ID: 4 | Name: bob | Price: £2.00 | Qty: 2 | Type: Product
 Removed: ID: 4 | Name: bob | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 4 | Name: bob | Price: £2.00 | Qty: 2 | Type: Product
+Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Removed: ID: 2 | Name: milk | Price: £10.00 | Qty: 3 | Type: Perishable | Expiry: 2026-04-27 | Storage Temp: 5
+Added: ID: 2 | Name: bob | Price: £2.00 | Qty: 20 | Type: Product
+Added: ID: 3 | Name: bobv | Price: £3.00 | Qty: 23 | Type: Perishable | Expiry: 2026-05-04 | Storage Temp: 5C
