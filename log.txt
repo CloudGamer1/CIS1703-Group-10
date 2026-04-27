@@ -1,0 +1,5 @@
+Added: ID: 2 | Name: milk | Price: £40.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Added: ID: 2 | Name: car2 | Price: £50.00 | Qty: 2 | Type: Product
+Added: ID: 3 | Name: mic | Price: £50.00 | Qty: 2 | Type: Electronic | Warranty: 3 months | Power: 500W
+Removed: ID: 1 | Name: car | Price: £100.00 | Qty: 5 | Type: Product
+Removed: ID: 2 | Name: car2 | Price: £50.00 | Qty: 2 | Type: Product

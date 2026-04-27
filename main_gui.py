@@ -6,6 +6,7 @@ from product_classes import (
     ElectronicProduct,
 )  # changed to import all three classes
 from tkinter import messagebox
+from smartalerts import run_smart_alerts
 
 InventoryFile = "inventory.csv"
 
@@ -301,6 +302,9 @@ tk.Button(root, text="Update Quantity", command=edit_product).pack(pady=5)
 tk.Button(
     root, text="Save", command=lambda: save_inventory("Inventory.csv", inventory)
 ).pack(pady=5)
+tk.Button(
+    root, text="Run Smart Alerts", command=lambda: run_smart_alerts(inventory)
+).pack(pady=10)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 

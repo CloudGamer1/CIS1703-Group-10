@@ -1,2 +1,2 @@
-product_id,name,price,quantity,type
-1,car,100.0,5,Product
+product_id,name,price,quantity,type,warranty_months,power_usage
+3,mic,50.0,2,Electronic,3,500

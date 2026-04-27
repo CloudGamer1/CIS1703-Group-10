@@ -4,11 +4,12 @@ from datetime import datetime, timedelta
 
 
 class Product:
-    def __init__(self, product_id, name, price, quantity):
+    def __init__(self, product_id, name, price, quantity, threshold=5):
         self.product_id = product_id
         self.name = name
         self.price = price
         self.quantity = quantity
+        self.threshold = threshold
 
     def calculate_value(self):
         return self.price * self.quantity
@@ -27,8 +28,10 @@ class Product:
 
 
 class PerishableProduct(Product):
-    def __init__(self, product_id, name, price, quantity, expiry_date, storage_temp):
-        super().__init__(product_id, name, price, quantity)
+    def __init__(
+        self, product_id, name, price, quantity, expiry_date, storage_temp, threshold=5
+    ):
+        super().__init__(product_id, name, price, quantity, threshold)
         self.expiry_date = expiry_date
         self.storage_temp = storage_temp
 
