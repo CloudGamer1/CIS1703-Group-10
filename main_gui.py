@@ -188,6 +188,8 @@ def add_product():
         warranty_entry.delete(0, tk.END)
         power_entry.delete(0, tk.END)
 
+        show_status("Product added successfully", "success") # success message after product added
+
     except:
         show_status("Failed Input", status_type="error") # now showing "failed input" with red colour
 
@@ -196,18 +198,19 @@ def remove_product():
     """
     removes the product from the inventory
     """
-    # try:
-    selected_index = listbox.curselection()[0]
-    removed_item = inventory.pop(selected_index)
+    try:
+     selected_index = listbox.curselection()[0]
+     removed_item = inventory.pop(selected_index)
 
-    # log
-    with open("log.txt", "a") as f:
-        f.write(f"Removed: {removed_item.to_display_string()}\n")
-    update_listbox()
-    update_dashboard()
+    
+     with open("log.txt", "a") as f:
+         f.write(f"Removed: {removed_item.to_display_string()}\n")
+     update_listbox()
+     update_dashboard()
+     show_status("Item removed", "Info") # added message
 
-    # except:
-    #    print("No item selected")
+    except:
+      show_status("No item selected", "error") #added no item selected error message
 
 
 def edit_product():
@@ -229,15 +232,15 @@ def edit_product():
         update_dashboard()
 
     except:
-        print("Error editing item")
+        show_status("Failed to update quantity", "error") #added failed to update quantity error message
 
 
-def save_inventory(
-    InventoryFile, data
-):
-    TempData = []
+def save_inventory(InventoryFile, data):
+    try:
+    
+     TempData = []
 
-    for item in data:
+     for item in data:
 
         row = {
             "product_id": item.product_id,
@@ -257,7 +260,7 @@ def save_inventory(
 
         TempData.append(row)
 
-    fields = [
+     fields = [
         "product_id",
         "name",
         "price",
@@ -267,12 +270,16 @@ def save_inventory(
         "power_usage",
         "expiry_date",
         "storage_temp",
-    ]
+     ]
 
-    with open(InventoryFile, "w", newline="") as InventoryData:
+     with open(InventoryFile, "w", newline="") as InventoryData:
         writer = csv.DictWriter(InventoryData, fields)
         writer.writeheader()
         writer.writerows(TempData)
+        show_status("Inventory Saved", "Success") # added shows inventory is successfully saved
+
+    except:
+        show_status("Failed to save inventory", "error") # added shows failed inventory error
 
 
 def load_inventory(
@@ -317,8 +324,11 @@ def load_inventory(
 
                 TempInventory.append(Data)
 
+            show_status("Inventory loaded", "info") #added info message
+
     except FileNotFoundError:
         TempInventory = []
+        show_status("No inventory file found", "warning") #error message on no inventory
 
     listbox.delete(0, tk.END)  # clears the listbox to stop duplicates
     for item in TempInventory:

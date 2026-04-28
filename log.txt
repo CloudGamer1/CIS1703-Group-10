@@ -1,2 +1,14 @@
 Added: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
 Added: ID: 5 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Removed: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 4 | Name: bob | Price: £2.00 | Qty: 2 | Type: Perishable | Expiry:  | Storage Temp: 
+Added: ID: 4 | Name: v | Price: £2.00 | Qty: 2 | Type: Product
+Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Added: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Removed: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Removed: ID: 2 | Name: milk | Price: £10.00 | Qty: 3 | Type: Perishable | Expiry: 2026-04-27 | Storage Temp: 5
+Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Removed: ID: 1 | Name: car | Price: £100.00 | Qty: 1 | Type: Product
+Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
