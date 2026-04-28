@@ -188,7 +188,7 @@ def add_product():
         power_entry.delete(0, tk.END)
 
     except:
-        show_status("Failed Input", status_type="error")#fixed box not showing "failed input" with red colour
+        show_status("Failed Input", status_type="error")#now showing "failed input" with red colour
 
 
 def remove_product():
