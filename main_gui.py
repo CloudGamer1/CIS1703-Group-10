@@ -43,20 +43,20 @@ quantity_entry.pack()
 
 """added fields for the perishable and electronic products"""
 # Perishable fields
-tk.Label(root, text="Expiry Date (YYYY-MM-DD)").pack()
+tk.Label(root, text="Expiry Date (YYYY-MM-DD) - (Perishable)").pack()
 expiry_entry = tk.Entry(root)
 expiry_entry.pack()
 
-tk.Label(root, text="Storage Temp").pack()
+tk.Label(root, text="Storage Temp - (Perishable)").pack()
 storage_entry = tk.Entry(root)
 storage_entry.pack()
 
 # Electronic fields
-tk.Label(root, text="Warranty (months)").pack()
+tk.Label(root, text="Warranty (months) - (Electronic)").pack()
 warranty_entry = tk.Entry(root)
 warranty_entry.pack()
 
-tk.Label(root, text="Power Usage (W)").pack()
+tk.Label(root, text="Power Usage (W) - (Electronic)").pack()
 power_entry = tk.Entry(root)
 power_entry.pack()
 
