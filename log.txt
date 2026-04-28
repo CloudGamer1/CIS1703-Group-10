@@ -1,0 +1,2 @@
+Added: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 5 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
