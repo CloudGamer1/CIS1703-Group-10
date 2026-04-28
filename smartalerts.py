@@ -65,9 +65,7 @@ def show_expiry_window(inventory):
 
 
 def run_smart_alerts(inventory):
-    root2 = tk.Tk()
-    root2.title("Inventory System")
-    root2.geometry("400x300")
+
     show_low_stock_alert(inventory)
     show_expiry_window(inventory)
 
