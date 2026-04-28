@@ -4,16 +4,16 @@ from product_classes import (
     Product,
     PerishableProduct,
     ElectronicProduct,
-)  # changed to import all three classes
+)
 from tkinter import messagebox
 from smartalerts import run_smart_alerts
 
 InventoryFile = "inventory.csv"
 
 # window
-root = tk.Tk()  # fixed it from tk.TK to tk.Tk()
+root = tk.Tk()
 root.title("Smartstock Dashboard")
-root.geometry("800x800")  # fixed typo
+root.geometry("800x850") #increased height to fix new unit feature
 
 # storage
 inventory = []
@@ -75,6 +75,12 @@ low_stock_label.pack()
 value_label = tk.Label(root, text="Total Value: £0")
 value_label.pack()
 
+status_label = tk.Label(root, text="", fg="white", bg="#3498db", width=80)#Rays code for the status label
+status_label.pack(pady=5)
+
+units_label = tk.Label(root, text="Total Units: 0")#added units label to the dashboard to show the total number of units in stock, not just the number of different products
+units_label.pack()
+
 
 """------------------------------
 -------------------------------
@@ -98,16 +104,44 @@ def update_dashboard():
     updates the dashboard "price, ammount of items, stock"
     """
     total_items = len(inventory)
+    total_units = sum(item.quantity for item in inventory) #ray added total units
 
     low_stock = sum(1 for item in inventory if item.quantity < 5)
 
     total_value = sum(item.calculate_value() for item in inventory)
 
     total_label.config(text=f"Total Items: {total_items}")
+    units_label.config(text=f"Total Units: {total_units}")#ray unit label
     low_stock_label.config(
         text=f"Low stock: {low_stock}"
-    )  # changed Total_stock_label to low_stock_label and added "_" to low_stock
+    ) 
     value_label.config(text=f"Total Value: £{total_value}")
+
+
+def show_status(message, status_type="info"):#inserted rays code here
+    colors = {
+        "error": "#e74c3c",
+        "success": "#2ecc71",
+        "warning": "#f39c12",
+        "info": "#3498db"
+    }
+
+    status_label.config(
+        text=message,
+        bg=colors.get(status_type, "#3498db")
+    )
+
+    # Cancel previous timer
+    if hasattr(show_status, "after_id"):
+        root.after_cancel(show_status.after_id)
+
+    # Auto-clear after 3 seconds
+    show_status.after_id = root.after(3000, clear_status)
+
+def clear_status():
+    status_label.config(text="", bg="gray")
+
+#end of rays code
 
 
 def add_product():
@@ -154,26 +188,29 @@ def add_product():
         warranty_entry.delete(0, tk.END)
         power_entry.delete(0, tk.END)
 
+        show_status("Product added successfully", "success") # success message after product added
+
     except:
-        print("Invalid input")
+        show_status("Failed Input", status_type="error") # now showing "failed input" with red colour
 
 
 def remove_product():
     """
     removes the product from the inventory
     """
-    # try:
-    selected_index = listbox.curselection()[0]
-    removed_item = inventory.pop(selected_index)
+    try:
+     selected_index = listbox.curselection()[0]
+     removed_item = inventory.pop(selected_index)
 
-    # log
-    with open("log.txt", "a") as f:
-        f.write(f"Removed: {removed_item.to_display_string()}\n")
-    update_listbox()
-    update_dashboard()
+    
+     with open("log.txt", "a") as f:
+         f.write(f"Removed: {removed_item.to_display_string()}\n")
+     update_listbox()
+     update_dashboard()
+     show_status("Item removed", "Info") # added message
 
-    # except:
-    #    print("No item selected")
+    except:
+      show_status("No item selected", "error") #added no item selected error message
 
 
 def edit_product():
@@ -195,15 +232,15 @@ def edit_product():
         update_dashboard()
 
     except:
-        print("Error editing item")
+        show_status("Failed to update quantity", "error") #added failed to update quantity error message
 
 
-def save_inventory(
-    InventoryFile, data
-):  # added the new fields for the perishable and electronic products to the save_inventory function
-    TempData = []
+def save_inventory(InventoryFile, data):
+    try:
+    
+     TempData = []
 
-    for item in data:
+     for item in data:
 
         row = {
             "product_id": item.product_id,
@@ -223,7 +260,7 @@ def save_inventory(
 
         TempData.append(row)
 
-    fields = [
+     fields = [
         "product_id",
         "name",
         "price",
@@ -233,17 +270,21 @@ def save_inventory(
         "power_usage",
         "expiry_date",
         "storage_temp",
-    ]
+     ]
 
-    with open(InventoryFile, "w", newline="") as InventoryData:
+     with open(InventoryFile, "w", newline="") as InventoryData:
         writer = csv.DictWriter(InventoryData, fields)
         writer.writeheader()
         writer.writerows(TempData)
+        show_status("Inventory Saved", "Success") # added shows inventory is successfully saved
+
+    except:
+        show_status("Failed to save inventory", "error") # added shows failed inventory error
 
 
 def load_inventory(
     InventoryFile,
-):  # added the new fields for the perishable and electronic products to the load_inventory function and added error handling for missing file
+): 
     TempInventory = []
 
     try:
@@ -283,8 +324,11 @@ def load_inventory(
 
                 TempInventory.append(Data)
 
+            show_status("Inventory loaded", "info") #added info message
+
     except FileNotFoundError:
         TempInventory = []
+        show_status("No inventory file found", "warning") #error message on no inventory
 
     listbox.delete(0, tk.END)  # clears the listbox to stop duplicates
     for item in TempInventory:
