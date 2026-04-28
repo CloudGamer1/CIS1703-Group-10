@@ -153,6 +153,19 @@ def add_product():
         name = name_entry.get()
         price = float(price_entry.get())
         quantity = int(quantity_entry.get())
+        
+        """warnings""" # made use of the "warning": "#f39c12" in show status
+        if name.strip() == "": # stops user from typing no name
+            show_status("Warning: Product name is empty", "warning")
+            return
+    
+        if price <= 0:
+            show_status("Warning: Price is zero negative", "warning")
+            return
+        
+        if quantity <= 0:
+            show_status("Warning: quantity is zero negative", "warning")
+            return
 
         product_type = (
             type_var.get().strip().lower()
