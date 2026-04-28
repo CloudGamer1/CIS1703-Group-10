@@ -146,7 +146,20 @@ def add_product():
     """
     adds products to the inventory, creates a new object of the product class
     """
+    try: # price only can be numbers
+        price = float(price_entry.get().strip())
+    except ValueError:
+        show_status("Price must contain numbers only", "warning")
+        return
+        
 
+    try: # quantity only can be numbers
+        quantity = int(quantity_entry.get().strip())
+    except ValueError:
+        show_status("Quantity must contain whole numbers only", "warning")
+        return
+
+    
     try:
         name = name_entry.get()
         price = float(price_entry.get())
