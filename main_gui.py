@@ -257,9 +257,13 @@ def edit_product():
     try:
         selected_index = listbox.curselection()[0]
         item = inventory[selected_index]
-
+        
         new_quantity = quantity_entry.get()
         item.quantity = int(new_quantity)
+        
+        if not new_quantity.isdigit(): # added validation for editing quantity
+            show_status("Warning: Quantity must be a positive number", "warning")
+            return
 
         # log
         with open("log.txt", "a") as f:

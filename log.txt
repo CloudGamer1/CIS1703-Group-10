@@ -29,3 +29,4 @@ Added: ID: 7 | Name: g | Price: £3.00 | Qty: 6 | Type: Perishable | Expiry: g | 
 Added: ID: 4 | Name: dd | Price: £2.00 | Qty: 1 | Type: Product
 Added: ID: 5 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
 Added: ID: 6 | Name: ddd | Price: £22.00 | Qty: 3333 | Type: Perishable | Expiry: 1002-04-06 | Storage Temp: 6
+Updated: car -> 3
