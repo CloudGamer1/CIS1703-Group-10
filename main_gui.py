@@ -13,7 +13,7 @@ InventoryFile = "inventory.csv"
 # window
 root = tk.Tk()
 root.title("Smartstock Dashboard")
-root.geometry("800x850")  # increased height to fix new unit feature
+root.geometry("800x850")
 
 # storage
 inventory = []
@@ -77,7 +77,7 @@ value_label.pack()
 
 status_label = tk.Label(
     root, text="", fg="white", bg="#3498db", width=80
-)  # Rays code for the status label
+)
 status_label.pack(pady=5)
 
 units_label = tk.Label(
@@ -108,19 +108,19 @@ def update_dashboard():
     updates the dashboard "price, ammount of items, stock"
     """
     total_items = len(inventory)
-    total_units = sum(item.quantity for item in inventory)  # ray added total units
+    total_units = sum(item.quantity for item in inventory)
 
     low_stock = sum(1 for item in inventory if item.quantity < 5)
 
     total_value = sum(item.calculate_value() for item in inventory)
 
     total_label.config(text=f"Total Items: {total_items}")
-    units_label.config(text=f"Total Units: {total_units}")  # ray unit label
+    units_label.config(text=f"Total Units: {total_units}") 
     low_stock_label.config(text=f"Low stock: {low_stock}")
     value_label.config(text=f"Total Value: £{total_value}")
 
 
-def show_status(message, status_type="info"):  # inserted rays code here
+def show_status(message, status_type="info"):
     colors = {
         "error": "#e74c3c",
         "success": "#2ecc71",
@@ -140,10 +140,7 @@ def show_status(message, status_type="info"):  # inserted rays code here
 
 def clear_status():
     status_label.config(text="", bg="gray")
-
-
-# end of rays code
-
+    
 
 def add_product():
     """
@@ -156,6 +153,12 @@ def add_product():
         quantity = int(quantity_entry.get())
         
         """warnings""" # made use of the "warning": "#f39c12" in show status
+        
+        for item in inventory: # Added prevention of duplicate product names
+            if item.name.lower() == name.lower():
+                show_status("Warning: Product with this name already exists", "warning")
+                return
+            
         if name.strip() == "": # stops user from typing no name
             show_status("Warning: Product name is empty", "warning")
             return
@@ -167,6 +170,8 @@ def add_product():
         if quantity <= 0:
             show_status("Warning: quantity is zero negative", "warning")
             return
+        
+        """End of warnings"""
 
         product_type = (
             type_var.get().strip().lower()
@@ -177,9 +182,24 @@ def add_product():
             product = Product(new_id, name, price, quantity)
 
         elif product_type == "perishable":
-            expiry = expiry_entry.get()
-            storage = storage_entry.get()
+            expiry = expiry_entry.get().strip()
+            storage = storage_entry.get().strip()
+            
+            # --- Expiry date validation ---
+            import datetime
+            try:
+                datetime.datetime.strptime(expiry, "%Y-%m-%d")
+            except ValueError:
+                show_status("Warning: Expiry date must be YYYY-MM-DD", "warning")
+                return
+            
+            if storage == "":
+                show_status("Warning: Storage temperature missing", "warning")
+                return
+            
             product = PerishableProduct(new_id, name, price, quantity, expiry, storage)
+
+                
 
         elif product_type == "electronic":
             warranty = int(warranty_entry.get())
