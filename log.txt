@@ -12,3 +12,32 @@ Removed: ID: 2 | Name: milk | Price: £10.00 | Qty: 3 | Type: Perishable | Expiry
 Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
 Removed: ID: 1 | Name: car | Price: £100.00 | Qty: 1 | Type: Product
 Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Added: ID: 4 | Name: Milk | Price: £2.00 | Qty: 4 | Type: Perishable | Expiry: 2026-05-04 | Storage Temp: 4C
+Added: ID: 4 | Name: n | Price: £2.00 | Qty: 11111111111111111 | Type: Product
+Added: ID: 5 | Name: vopb | Price: £999999999999999983222784.00 | Qty: 233333333333333333333333 | Type: Product
+Added: ID: 4 | Name: d | Price: £2.00 | Qty: 2 | Type: Electronic | Warranty: 4 months | Power: 400W
+Added: ID: 4 | Name: bpb | Price: £1000000000.00 | Qty: 10000000000 | Type: Product
+Added: ID: 4 | Name: viob | Price: £-1.00 | Qty: 100 | Type: Product
+Added: ID: 4 | Name:  | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 4 | Name: b | Price: £1000000000000.00 | Qty: 2 | Type: Product
+Added: ID: 4 | Name: milk | Price: £0.00 | Qty: 1 | Type: Perishable | Expiry: 2026-05-04 | Storage Temp: 4C
+Added: ID: 4 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 4 | Name: Milk 2 | Price: £2.00 | Qty: 2 | Type: Perishable | Expiry: 170405 | Storage Temp: 4
+Added: ID: 5 | Name: Apples | Price: £3.00 | Qty: 3 | Type: Perishable | Expiry: 002231 | Storage Temp: 5
+Added: ID: 6 | Name: dddd | Price: £2.00 | Qty: 2 | Type: Perishable | Expiry:  | Storage Temp: 4
+Added: ID: 7 | Name: g | Price: £3.00 | Qty: 6 | Type: Perishable | Expiry: g | Storage Temp: g
+Added: ID: 4 | Name: dd | Price: £2.00 | Qty: 1 | Type: Product
+Added: ID: 5 | Name: b | Price: £2.00 | Qty: 2 | Type: Product
+Added: ID: 6 | Name: ddd | Price: £22.00 | Qty: 3333 | Type: Perishable | Expiry: 1002-04-06 | Storage Temp: 6
+Updated: car -> 3
+Added: ID: 4 | Name: ddd | Price: £3.00 | Qty: 1 | Type: Electronic | Warranty: 4 months | Power: 4W
+Updated: ddd -> 1000000000000000
+Added: ID: 4 | Name: fff | Price: £4.00 | Qty: 1 | Type: Electronic | Warranty: 100 months | Power: 3W
+Added: ID: 5 | Name: 44 | Price: £332.00 | Qty: 2 | Type: Electronic | Warranty: 0 months | Power: 0W
+Removed: ID: 3 | Name: chesse | Price: £5.00 | Qty: 6 | Type: Perishable | Expiry: 2026-04-28 | Storage Temp: 5
+Removed: ID: 5 | Name: 44 | Price: £332.00 | Qty: 2 | Type: Electronic | Warranty: 0 months | Power: 0W
+Removed: ID: 4 | Name: fff | Price: £4.00 | Qty: 1 | Type: Electronic | Warranty: 100 months | Power: 3W
+Removed: ID: 2 | Name: milk | Price: £10.00 | Qty: 3 | Type: Perishable | Expiry: 2026-04-27 | Storage Temp: 5
+Removed: ID: 1 | Name: car | Price: £100.00 | Qty: 1 | Type: Product
+Added: ID: 4 | Name: b | Price: £2.00 | Qty: 3 | Type: Product
+Added: ID: 5 | Name: apple | Price: £144.00 | Qty: 2 | Type: Perishable | Expiry: 1002-05-03 | Storage Temp: 3

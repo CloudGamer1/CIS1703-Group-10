@@ -13,7 +13,7 @@ InventoryFile = "inventory.csv"
 # window
 root = tk.Tk()
 root.title("Smartstock Dashboard")
-root.geometry("800x850") #increased height to fix new unit feature
+root.geometry("800x850")
 
 # storage
 inventory = []
@@ -43,20 +43,20 @@ quantity_entry.pack()
 
 """added fields for the perishable and electronic products"""
 # Perishable fields
-tk.Label(root, text="Expiry Date (YYYY-MM-DD)").pack()
+tk.Label(root, text="Expiry Date (YYYY-MM-DD) - (Perishable)").pack()
 expiry_entry = tk.Entry(root)
 expiry_entry.pack()
 
-tk.Label(root, text="Storage Temp").pack()
+tk.Label(root, text="Storage Temp - (Perishable)").pack()
 storage_entry = tk.Entry(root)
 storage_entry.pack()
 
 # Electronic fields
-tk.Label(root, text="Warranty (months)").pack()
+tk.Label(root, text="Warranty (months) - (Electronic)").pack()
 warranty_entry = tk.Entry(root)
 warranty_entry.pack()
 
-tk.Label(root, text="Power Usage (W)").pack()
+tk.Label(root, text="Power Usage (W) - (Electronic)").pack()
 power_entry = tk.Entry(root)
 power_entry.pack()
 
@@ -75,10 +75,14 @@ low_stock_label.pack()
 value_label = tk.Label(root, text="Total Value: £0")
 value_label.pack()
 
-status_label = tk.Label(root, text="", fg="white", bg="#3498db", width=80)#Rays code for the status label
+status_label = tk.Label(
+    root, text="", fg="white", bg="#3498db", width=80
+)
 status_label.pack(pady=5)
 
-units_label = tk.Label(root, text="Total Units: 0")#added units label to the dashboard to show the total number of units in stock, not just the number of different products
+units_label = tk.Label(
+    root, text="Total Units: 0"
+)  # added units label to the dashboard to show the total number of units in stock, not just the number of different products
 units_label.pack()
 
 
@@ -104,55 +108,83 @@ def update_dashboard():
     updates the dashboard "price, ammount of items, stock"
     """
     total_items = len(inventory)
-    total_units = sum(item.quantity for item in inventory) #ray added total units
+    total_units = sum(item.quantity for item in inventory)
 
     low_stock = sum(1 for item in inventory if item.quantity < 5)
 
     total_value = sum(item.calculate_value() for item in inventory)
 
     total_label.config(text=f"Total Items: {total_items}")
-    units_label.config(text=f"Total Units: {total_units}")#ray unit label
-    low_stock_label.config(
-        text=f"Low stock: {low_stock}"
-    ) 
+    units_label.config(text=f"Total Units: {total_units}") 
+    low_stock_label.config(text=f"Low stock: {low_stock}")
     value_label.config(text=f"Total Value: £{total_value}")
 
 
-def show_status(message, status_type="info"):#inserted rays code here
+def show_status(message, status_type="info"):
     colors = {
         "error": "#e74c3c",
         "success": "#2ecc71",
         "warning": "#f39c12",
-        "info": "#3498db"
+        "info": "#3498db",
     }
 
-    status_label.config(
-        text=message,
-        bg=colors.get(status_type, "#3498db")
-    )
+    status_label.config(text=message, bg=colors.get(status_type, "#3498db"))
 
     # Cancel previous timer
     if hasattr(show_status, "after_id"):
         root.after_cancel(show_status.after_id)
 
-    # Auto-clear after 3 seconds
-    show_status.after_id = root.after(3000, clear_status)
+    # Auto-clear after 5 seconds
+    show_status.after_id = root.after(5000, clear_status)
+
 
 def clear_status():
     status_label.config(text="", bg="gray")
-
-#end of rays code
-
+    
 
 def add_product():
     """
     adds products to the inventory, creates a new object of the product class
     """
+    try: # price only can be numbers
+        price = float(price_entry.get().strip())
+    except ValueError:
+        show_status("Price must contain numbers only", "warning")
+        return
+        
 
+    try: # quantity only can be numbers
+        quantity = int(quantity_entry.get().strip())
+    except ValueError:
+        show_status("Quantity must contain whole numbers only", "warning")
+        return
+
+    
     try:
         name = name_entry.get()
         price = float(price_entry.get())
         quantity = int(quantity_entry.get())
+        
+        """warnings""" # made use of the "warning": "#f39c12" in show status
+        
+        for item in inventory: # Added prevention of duplicate product names
+            if item.name.lower() == name.lower():
+                show_status("Warning: Product with this name already exists", "warning")
+                return
+            
+        if name.strip() == "": # stops user from typing no name
+            show_status("Warning: Product name is empty", "warning")
+            return
+    
+        if price <= 0:
+            show_status("Warning: Price is zero negative", "warning")
+            return
+        
+        if quantity <= 0:
+            show_status("Warning: quantity is zero negative", "warning")
+            return
+        
+        """End of warnings"""
 
         product_type = (
             type_var.get().strip().lower()
@@ -163,9 +195,24 @@ def add_product():
             product = Product(new_id, name, price, quantity)
 
         elif product_type == "perishable":
-            expiry = expiry_entry.get()
-            storage = storage_entry.get()
+            expiry = expiry_entry.get().strip()
+            storage = storage_entry.get().strip()
+            
+            # --- Expiry date validation ---
+            import datetime
+            try:
+                datetime.datetime.strptime(expiry, "%Y-%m-%d")
+            except ValueError:
+                show_status("Warning: Expiry date must be YYYY-MM-DD", "warning")
+                return
+            
+            if storage == "":
+                show_status("Warning: Storage temperature missing", "warning")
+                return
+            
             product = PerishableProduct(new_id, name, price, quantity, expiry, storage)
+
+                
 
         elif product_type == "electronic":
             warranty = int(warranty_entry.get())
@@ -188,10 +235,14 @@ def add_product():
         warranty_entry.delete(0, tk.END)
         power_entry.delete(0, tk.END)
 
-        show_status("Product added successfully", "success") # success message after product added
+        show_status(
+            "Product added successfully", "success"
+        )  # success message after product added
 
     except:
-        show_status("Failed Input", status_type="error") # now showing "failed input" with red colour
+        show_status(
+            "Failed Input", status_type="error"
+        )  # now showing "failed input" with red colour
 
 
 def remove_product():
@@ -199,18 +250,17 @@ def remove_product():
     removes the product from the inventory
     """
     try:
-     selected_index = listbox.curselection()[0]
-     removed_item = inventory.pop(selected_index)
+        selected_index = listbox.curselection()[0]
+        removed_item = inventory.pop(selected_index)
 
-    
-     with open("log.txt", "a") as f:
-         f.write(f"Removed: {removed_item.to_display_string()}\n")
-     update_listbox()
-     update_dashboard()
-     show_status("Item removed", "Info") # added message
+        with open("log.txt", "a") as f:
+            f.write(f"Removed: {removed_item.to_display_string()}\n")
+        update_listbox()
+        update_dashboard()
+        show_status("Item removed", "Info")  # added message
 
     except:
-      show_status("No item selected", "error") #added no item selected error message
+        show_status("No item selected", "error")  # added no item selected error message
 
 
 def edit_product():
@@ -220,9 +270,13 @@ def edit_product():
     try:
         selected_index = listbox.curselection()[0]
         item = inventory[selected_index]
-
+        
         new_quantity = quantity_entry.get()
         item.quantity = int(new_quantity)
+        
+        if not new_quantity.isdigit(): # added validation for editing quantity
+            show_status("Warning: Quantity must be a positive number", "warning")
+            return
 
         # log
         with open("log.txt", "a") as f:
@@ -232,59 +286,65 @@ def edit_product():
         update_dashboard()
 
     except:
-        show_status("Failed to update quantity", "error") #added failed to update quantity error message
+        show_status(
+            "Failed to update quantity", "error"
+        )  # added failed to update quantity error message
 
 
 def save_inventory(InventoryFile, data):
     try:
-    
-     TempData = []
 
-     for item in data:
+        TempData = []
 
-        row = {
-            "product_id": item.product_id,
-            "name": item.name,
-            "price": item.price,
-            "quantity": item.quantity,
-            "type": item.get_type(),
-        }
+        for item in data:
 
-        if item.get_type() == "Perishable":
-            row["expiry_date"] = item.expiry_date
-            row["storage_temp"] = item.storage_temp
+            row = {
+                "product_id": item.product_id,
+                "name": item.name,
+                "price": item.price,
+                "quantity": item.quantity,
+                "type": item.get_type(),
+            }
 
-        if item.get_type() == "Electronic":
-            row["warranty_months"] = item.warranty_months
-            row["power_usage"] = item.power_usage
+            if item.get_type() == "Perishable":
+                row["expiry_date"] = item.expiry_date
+                row["storage_temp"] = item.storage_temp
 
-        TempData.append(row)
+            if item.get_type() == "Electronic":
+                row["warranty_months"] = item.warranty_months
+                row["power_usage"] = item.power_usage
 
-     fields = [
-        "product_id",
-        "name",
-        "price",
-        "quantity",
-        "type",
-        "warranty_months",
-        "power_usage",
-        "expiry_date",
-        "storage_temp",
-     ]
+            TempData.append(row)
 
-     with open(InventoryFile, "w", newline="") as InventoryData:
-        writer = csv.DictWriter(InventoryData, fields)
-        writer.writeheader()
-        writer.writerows(TempData)
-        show_status("Inventory Saved", "Success") # added shows inventory is successfully saved
+        fields = [
+            "product_id",
+            "name",
+            "price",
+            "quantity",
+            "type",
+            "warranty_months",
+            "power_usage",
+            "expiry_date",
+            "storage_temp",
+        ]
+
+        with open(InventoryFile, "w", newline="") as InventoryData:
+            writer = csv.DictWriter(InventoryData, fields)
+            writer.writeheader()
+            writer.writerows(TempData)
+            show_status(
+                "Inventory Saved", "Success"
+            )  # added shows inventory is successfully saved
 
     except:
-        show_status("Failed to save inventory", "error") # added shows failed inventory error
+        show_status(
+            "Failed to save inventory", "error"
+        )  # added shows failed inventory error
 
 
 def load_inventory(
     InventoryFile,
-): 
+):
     TempInventory = []
 
     try:
@@ -324,11 +384,23 @@ def load_inventory(
 
                 TempInventory.append(Data)
 
-            show_status("Inventory loaded", "info") #added info message
+            show_status("Inventory loaded", "info")  # added info message
 
     except FileNotFoundError:
         TempInventory = []
-        show_status("No inventory file found", "warning") #error message on no inventory
+        show_status(
+            "No inventory file found", "warning"
+        )  # error message on no inventory
+
+        if messagebox.askokcancel("New inventory","Do you want to create a new save file?"):
+            try:
+                with (InventoryFile, "x") as InventoryData:
+                    pass
+            except FileExistsError:
+                show_status(
+            "File exists", "warning"
+        )
+
 
     listbox.delete(0, tk.END)  # clears the listbox to stop duplicates
     for item in TempInventory:
@@ -359,6 +431,14 @@ tk.Button(
 tk.Button(
     root, text="Run Smart Alerts", command=lambda: run_smart_alerts(inventory)
 ).pack(pady=10)
+
+
+def test():
+    print("here")
+
+#added key bindings
+root.bind("<Return>", lambda event: add_product())
+root.bind("<Control-s>", lambda event: save_inventory("Inventory.csv", inventory))
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
